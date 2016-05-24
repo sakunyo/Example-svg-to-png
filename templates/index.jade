@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title!=title
+    style!=css
+  body
+    main(role="main")
+      h1!=title
+      table
+        tr
+          th SVG
+          td.embed
+            svg(width="33",height="33")!=svg
+        tr
+          th Img(SVG)
+          td.images
+      h2 Action
+      ul
+        li#add
+          a(href="#") append img(svg)
+        li#canvas
+          a(href="#") svg to canvas
+    script(src="main.js")
