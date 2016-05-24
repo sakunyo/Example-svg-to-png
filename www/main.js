@@ -19,15 +19,21 @@ const app = {};
 
         getImage() {
             let img = new Image();
+            let bbox = this.svg.getBBox();
+            
             img.src = base64dataURLencode((new XMLSerializer()).serializeToString(this.svg));
+            img.width = bbox.width;
+            img.height = bbox.height;
             return img;
         }
 
-        getCanvas(box = {width: 33, height: 33}) {
+        getCanvas() {
+            let bbox = this.svg.getBBox();
             let img = this.getImage();
             let canvas = document.createElement('canvas');
-            canvas.setAttribute("width", box.width);
-            canvas.setAttribute("height", box.height);
+            
+            canvas.setAttribute("width", ~~(bbox.width) + 1);
+            canvas.setAttribute("height", ~~(bbox.height) + 1);
             
             let ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
