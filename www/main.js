@@ -46,7 +46,7 @@ const app = {};
 (function (app) {
     "use strict";
     
-    let svg = new app.MySVG(document.querySelector("svg"));
+    const svg = new app.MySVG(document.querySelector("svg"));
 
     // buttons
     let add = document.getElementById("add").querySelector("a");
