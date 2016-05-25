@@ -3,6 +3,8 @@
 D3JSのグラフ・チャートをSVGで出力した場合や、DOM Tree into SVG(foreignObject) などの
 SVG をユーザーが画像リソースとしてダウンロードを可能にする為には、Canvas要素へ描画を行う必要がある。
 
+また日本語などのASCII文字以外が含まれる場合に btoa(...) で `invalid character` になり base64 に変換できない。
+
 ### 手順
 
 1. SVG要素 を base64 (`data:image/svg+xml`) へ変換する
@@ -22,3 +24,4 @@ SVG をユーザーが画像リソースとしてダウンロードを可能に�
 - [Drawing DOM objects into a canvas - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Drawing_DOM_objects_into_a_canvas)<br>
   \[日本語訳\] [DOM オブジェクトを Canvas に描画する - HTML | MDN](https://developer.mozilla.org/ja/docs/Web/HTML/Canvas/Drawing_DOM_objects_into_a_canvas)
 - [Download canvas as an image](http://jsfiddle.net/AbdiasSoftware/7PRNN/)
+- [【JavaScript】window.btoa(&#8216;日本語&#8217;) する   at softelメモ](https://www.softel.co.jp/blogs/tech/archives/4133)
