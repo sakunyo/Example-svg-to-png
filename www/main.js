@@ -17,6 +17,9 @@ const app = {};
             return this.svg;
         }
 
+        /**
+         * @returns {Promise}
+         */
         getImage() {
             let img = new Image();
             let bbox = this.svg.getBBox();
@@ -24,20 +27,30 @@ const app = {};
             img.src = base64dataURLencode((new XMLSerializer()).serializeToString(this.svg));
             img.width = bbox.width;
             img.height = bbox.height;
-            return img;
+
+            return new Promise((resolve, reject) => {
+                img.onload = () => {
+                    resolve(img);
+                }
+            });
         }
 
+        /**
+         * @returns {Promise}
+         */
         getCanvas() {
             let bbox = this.svg.getBBox();
-            let img = this.getImage();
             let canvas = document.createElement('canvas');
-            
-            canvas.setAttribute("width", ~~(bbox.width) + 1);
-            canvas.setAttribute("height", ~~(bbox.height) + 1);
-            
             let ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0);
-            return canvas;
+          
+            return new Promise((resolve, reject) => {
+                this.getImage().then((img) => {
+                    canvas.setAttribute("width", ~~(bbox.width) + 1);
+                    canvas.setAttribute("height", ~~(bbox.height) + 1);
+                    ctx.drawImage(img, 0, 0);
+                    resolve(canvas);
+                });
+            });
         }
     };
 
@@ -54,27 +67,28 @@ const app = {};
     
     add.addEventListener("click", (event) => {
         event.preventDefault();
-        
-        let images = document.querySelector(".images");
-        let img = images.querySelector("img");
-        
-        if (img) {
-            images.removeChild(img);
-        }
-        images.appendChild(svg.getImage());
-        
-        console.log('added.');
+
+        svg.getImage().then((element) => {
+            let images = document.querySelector(".images");
+            let img = images.querySelector("img");
+            
+            if (img) {
+                images.removeChild(img);
+            }
+            
+            images.appendChild(element);
+            console.log('added.');
+        });
     }, false);
 
     cv.addEventListener("click", (event) => {
         event.preventDefault();
 
-        let canvas = svg.getCanvas();
-
-        document.querySelector(".canvas").appendChild(canvas);
-
-        console.log("convert to canvas.");
-    });
+        svg.getCanvas().then((canvas) => {
+            document.querySelector(".canvas").appendChild(canvas);
+            console.log("convert to canvas.");
+        });
+    }, false);
     
     console.log('launched.');
 })(app);
